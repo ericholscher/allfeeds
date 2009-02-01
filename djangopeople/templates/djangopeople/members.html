@@ -1,0 +1,17 @@
+{% extends "djangopeople/base.html" %}
+
+{% block dptitle %}
+Members
+{% endblock %}
+
+{% block body_title %}
+<h2>People </h2>
+{% endblock %}
+
+{% block body %}
+{% for person in members %}
+<a href="{{person.get_absolute_url}}">{{ person.name }}</a><br><br>
+{% endfor %}
+<br><br>
+
+{% endblock %}

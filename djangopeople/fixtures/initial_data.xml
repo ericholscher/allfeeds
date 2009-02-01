@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<django-objects version="1.0">
+    <object pk="1" model="djangopeople.service">
+        <field type="CharField" name="name">Service Blog</field>
+        <field type="SlugField" name="slug">service-blog</field>
+        <field type="CharField" name="url"></field>
+        <field type="CharField" name="user_template"></field>
+        <field type="CharField" name="userfeed_template"></field>
+        <field type="CharField" name="tagfeed_template"></field>
+        <field type="CharField" name="public_feed"></field>
+        <field type="BooleanField" name="active">True</field>
+        <field type="BooleanField" name="uses_api">False</field>
+    </object>
+    <object pk="2" model="djangopeople.service">
+        <field type="CharField" name="name">Flickr</field>
+        <field type="SlugField" name="slug">flickr</field>
+        <field type="CharField" name="url">http://flickr.com</field>
+        <field type="CharField" name="user_template">flickr.com/photos/%s</field>
+        <field type="CharField" name="userfeed_template">http://api.flickr.com/services/feeds/photos_public.gne?id=%s@N00&amp;lang=en-us&amp;format=atom</field>
+        <field type="CharField" name="tagfeed_template"></field>
+        <field type="CharField" name="public_feed"></field>
+        <field type="BooleanField" name="active">True</field>
+        <field type="BooleanField" name="uses_api">False</field>
+    </object>
+    <object pk="3" model="djangopeople.service">
+        <field type="CharField" name="name">Twitter</field>
+        <field type="SlugField" name="slug">twitter</field>
+        <field type="CharField" name="url"></field>
+        <field type="CharField" name="user_template">twitter.com/%s</field>
+        <field type="CharField" name="userfeed_template"></field>
+        <field type="CharField" name="tagfeed_template"></field>
+        <field type="CharField" name="public_feed"></field>
+        <field type="BooleanField" name="active">True</field>
+        <field type="BooleanField" name="uses_api">True</field>
+    </object>
+    <object pk="4" model="djangopeople.service">
+        <field type="CharField" name="name">Django People</field>
+        <field type="SlugField" name="slug">django-people</field>
+        <field type="CharField" name="url"></field>
+        <field type="CharField" name="user_template">djangopeople.net/%s</field>
+        <field type="CharField" name="userfeed_template"></field>
+        <field type="CharField" name="tagfeed_template"></field>
+        <field type="CharField" name="public_feed"></field>
+        <field type="BooleanField" name="active">False</field>
+        <field type="BooleanField" name="uses_api">False</field>
+    </object>
+    <object pk="5" model="djangopeople.service">
+        <field type="CharField" name="name">Django Snippets</field>
+        <field type="SlugField" name="slug">django-snippets</field>
+        <field type="CharField" name="url"></field>
+        <field type="CharField" name="user_template">djangosnippets.org/users/%s</field>
+        <field type="CharField" name="userfeed_template">http://www.djangosnippets.org/feeds/author/%s/</field>
+        <field type="CharField" name="tagfeed_template"></field>
+        <field type="CharField" name="public_feed"></field>
+        <field type="BooleanField" name="active">True</field>
+        <field type="BooleanField" name="uses_api">False</field>
+    </object>
+    <object pk="6" model="djangopeople.service">
+        <field type="CharField" name="name">Delicious</field>
+        <field type="SlugField" name="slug">delicious</field>
+        <field type="CharField" name="url"></field>
+        <field type="CharField" name="user_template">delicious.com/%s</field>
+        <field type="CharField" name="userfeed_template">http://feeds.delicious.com/v2/atom/%s?count=20</field>
+        <field type="CharField" name="tagfeed_template"></field>
+        <field type="CharField" name="public_feed"></field>
+        <field type="BooleanField" name="active">True</field>
+        <field type="BooleanField" name="uses_api">False</field>
+    </object>
+    <object pk="7" model="djangopeople.service">
+        <field type="CharField" name="name">LinkedIn</field>
+        <field type="SlugField" name="slug">linkedin</field>
+        <field type="CharField" name="url"></field>
+        <field type="CharField" name="user_template">linkedin.com/in/%s</field>
+        <field type="CharField" name="userfeed_template"></field>
+        <field type="CharField" name="tagfeed_template"></field>
+        <field type="CharField" name="public_feed"></field>
+        <field type="BooleanField" name="active">False</field>
+        <field type="BooleanField" name="uses_api">False</field>
+    </object>
+    <object pk="8" model="djangopeople.service">
+        <field type="CharField" name="name">Last.fm Recent Tracks</field>
+        <field type="SlugField" name="slug">lastfm-recent-tracks</field>
+        <field type="CharField" name="url"></field>
+        <field type="CharField" name="user_template">last.fm/user/%s</field>
+        <field type="CharField" name="userfeed_template">http://ws.audioscrobbler.com/1.0/user/%s/recenttracks.rss</field>
+        <field type="CharField" name="tagfeed_template"></field>
+        <field type="CharField" name="public_feed"></field>
+        <field type="BooleanField" name="active">True</field>
+        <field type="BooleanField" name="uses_api">False</field>
+    </object>
+    <object pk="9" model="djangopeople.service">
+        <field type="CharField" name="name">Magnolia</field>
+        <field type="SlugField" name="slug">magnolia</field>
+        <field type="CharField" name="url"></field>
+        <field type="CharField" name="user_template">ma.gnolia.com/people/%s</field>
+        <field type="CharField" name="userfeed_template">http://ma.gnolia.com/atom/full/people/%s</field>
+        <field type="CharField" name="tagfeed_template"></field>
+        <field type="CharField" name="public_feed"></field>
+        <field type="BooleanField" name="active">True</field>
+        <field type="BooleanField" name="uses_api">False</field>
+    </object>
+    <object pk="10" model="djangopeople.service">
+        <field type="CharField" name="name">MyOpenID</field>
+        <field type="SlugField" name="slug">myopenid</field>
+        <field type="CharField" name="url"></field>
+        <field type="CharField" name="user_template">%s.myopenid.com</field>
+        <field type="CharField" name="userfeed_template"></field>
+        <field type="CharField" name="tagfeed_template"></field>
+        <field type="CharField" name="public_feed"></field>
+        <field type="BooleanField" name="active">False</field>
+        <field type="BooleanField" name="uses_api">False</field>
+    </object>
+    <object pk="11" model="djangopeople.service">
+        <field type="CharField" name="name">GitHub</field>
+        <field type="SlugField" name="slug">github</field>
+        <field type="CharField" name="url"></field>
+        <field type="CharField" name="user_template">github.com/%s</field>
+        <field type="CharField" name="userfeed_template">http://github.com/%s.atom</field>
+        <field type="CharField" name="tagfeed_template"></field>
+        <field type="CharField" name="public_feed"></field>
+        <field type="BooleanField" name="active">True</field>
+        <field type="BooleanField" name="uses_api">False</field>
+    </object>
+    <object pk="12" model="djangopeople.service">
+        <field type="CharField" name="name">FriendFeed</field>
+        <field type="SlugField" name="slug">friendfeed</field>
+        <field type="CharField" name="url"></field>
+        <field type="CharField" name="user_template">friendfeed.com/%s</field>
+        <field type="CharField" name="userfeed_template">http://friendfeed.com/%s?format=atom</field>
+        <field type="CharField" name="tagfeed_template"></field>
+        <field type="CharField" name="public_feed"></field>
+        <field type="BooleanField" name="active">True</field>
+        <field type="BooleanField" name="uses_api">True</field>
+    </object>
+    <object pk="13" model="djangopeople.service">
+        <field type="CharField" name="name">StumbleUpon</field>
+        <field type="SlugField" name="slug">stumbleupon</field>
+        <field type="CharField" name="url"></field>
+        <field type="CharField" name="user_template">%s.stumbleupon.com</field>
+        <field type="CharField" name="userfeed_template"></field>
+        <field type="CharField" name="tagfeed_template"></field>
+        <field type="CharField" name="public_feed"></field>
+        <field type="BooleanField" name="active">False</field>
+        <field type="BooleanField" name="uses_api">False</field>
+    </object>
+    <object pk="14" model="djangopeople.service">
+        <field type="CharField" name="name">Readernaut</field>
+        <field type="SlugField" name="slug">readernaut</field>
+        <field type="CharField" name="url"></field>
+        <field type="CharField" name="user_template">readernaut.com/%s</field>
+        <field type="CharField" name="userfeed_template">http://readernaut.com/rss/%s/</field>
+        <field type="CharField" name="tagfeed_template"></field>
+        <field type="CharField" name="public_feed"></field>
+        <field type="BooleanField" name="active">True</field>
+        <field type="BooleanField" name="uses_api">False</field>
+    </object>
+    <object pk="15" model="djangopeople.service">
+        <field type="CharField" name="name">Reddit</field>
+        <field type="SlugField" name="slug">reddit</field>
+        <field type="CharField" name="url"></field>
+        <field type="CharField" name="user_template">reddit.com/user/%s</field>
+        <field type="CharField" name="userfeed_template"></field>
+        <field type="CharField" name="tagfeed_template"></field>
+        <field type="CharField" name="public_feed"></field>
+        <field type="BooleanField" name="active">False</field>
+        <field type="BooleanField" name="uses_api">False</field>
+    </object>
+    <object pk="16" model="djangopeople.service">
+        <field type="CharField" name="name">Digg</field>
+        <field type="SlugField" name="slug">digg</field>
+        <field type="CharField" name="url"></field>
+        <field type="CharField" name="user_template">digg.com/users/%s</field>
+        <field type="CharField" name="userfeed_template"></field>
+        <field type="CharField" name="tagfeed_template"></field>
+        <field type="CharField" name="public_feed"></field>
+        <field type="BooleanField" name="active">False</field>
+        <field type="BooleanField" name="uses_api">False</field>
+    </object>
+    <object pk="17" model="djangopeople.service">
+        <field type="CharField" name="name">Slideshare</field>
+        <field type="SlugField" name="slug">slideshare</field>
+        <field type="CharField" name="url"></field>
+        <field type="CharField" name="user_template">slideshare.net/%s</field>
+        <field type="CharField" name="userfeed_template">http://www.slideshare.net/rss/user/%s</field>
+        <field type="CharField" name="tagfeed_template"></field>
+        <field type="CharField" name="public_feed"></field>
+        <field type="BooleanField" name="active">True</field>
+        <field type="BooleanField" name="uses_api">False</field>
+    </object>
+    <object pk="1" model="auth.user">
+        <field type="CharField" name="username">eric</field>
+        <field type="CharField" name="first_name"></field>
+        <field type="CharField" name="last_name"></field>
+        <field type="CharField" name="email">eric@ericholscher.com</field>
+        <field type="CharField" name="password">sha1$cb99e$a8a4793b08190362b9cc6239d87ed01a9c106f15</field>
+        <field type="BooleanField" name="is_staff">True</field>
+        <field type="BooleanField" name="is_active">True</field>
+        <field type="BooleanField" name="is_superuser">True</field>
+        <field type="DateTimeField" name="last_login">2009-01-01 14:07:05</field>
+        <field type="DateTimeField" name="date_joined">2009-01-01 14:06:44</field>
+        <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
+        <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
+    </object>
+    <object pk="1" model="djangopeople.subdomain">
+        <field type="SlugField" name="slug">django</field>
+        <field to="auth.user" name="user" rel="ManyToOneRel"><None></None></field>
+        <field type="CharField" name="source_url">http://djangoproject.com/community/</field>
+        <field to="djangopeople.member" name="members" rel="ManyToManyRel"></field>
+        <field to="djangopeople.serviceentry" name="service_entries" rel="ManyToManyRel"></field>
+        <field type="DateTimeField" name="last_user_check">2009-01-01 14:06:44</field>
+    </object>
+    <object pk="2" model="djangopeople.subdomain">
+        <field type="SlugField" name="slug">python</field>
+        <field to="auth.user" name="user" rel="ManyToOneRel"><None></None></field>
+        <field type="CharField" name="source_url">http://www.planetpython.org/</field>
+        <field to="djangopeople.member" name="members" rel="ManyToManyRel"></field>
+        <field to="djangopeople.serviceentry" name="service_entries" rel="ManyToManyRel"></field>
+        <field type="DateTimeField" name="last_user_check">2009-01-01 14:06:44</field>
+    </object>
+</django-objects>

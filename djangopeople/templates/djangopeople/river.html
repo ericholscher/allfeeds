@@ -1,0 +1,20 @@
+{% extends "djangopeople/base.html" %}
+
+{% block dptitle %}
+River for {{ riverof|capfirst }}
+{% endblock %}
+
+{% block body_title %}
+<h2>
+River of {{ riverof|capfirst }}<br>
+<a href="/agg/feeds/service/{{ riverof }}/">Atom Feed of this page</a>
+</h2>
+{% endblock %}
+
+{% block body %}
+{% load markup people_tags %}
+{% for object in objects %}
+{% render object %}
+{% endfor %}
+<br><br>
+{% endblock %}

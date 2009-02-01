@@ -1,0 +1,32 @@
+{% extends "djangopeople/base.html" %}
+
+{% block dptitle %}
+ {{ object.member.name }} - {{ object.title }}
+{% endblock %}
+
+{% block body_title %}
+<h2>
+    {{ object.title }} (<a rel="nofollow" href="{{ object.link }}">Offsite link</a>)
+</h2>
+{% endblock %}
+
+{% block body %}
+{% load markup %}
+<img alt="{{object.service_name}}" src="http://media.ericholscher.com/images/services/{{ object.service_name }}.png" />
+<span class="life_title"><strong><a href="{{ object.member.get_absolute_url }}">{{ object.member.name }}</a></strong> ( {{ object.published|timesince }} ago ) </span>
+{% if object.media_thumbnail %}
+<p>
+<a href="{{ object.media_link }}">
+    <img src="{{ object.media_thumbnail }}" alt="{{ object.media_title }}" />
+</a>
+</p>
+{% endif %}
+<p>
+{{ object.title|urlize }}
+</p>
+<p>
+{# {{ object.content|safe|truncatewords_html:"200" }} #}
+{{ object.content|safe }}
+</p>
+
+{% endblock %}

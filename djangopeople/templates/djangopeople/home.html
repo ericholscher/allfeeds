@@ -1,0 +1,31 @@
+{% extends "djangopeople/base.html" %}
+
+{% block dptitle %}
+Home
+{% endblock %}
+
+{% block body_title %}
+<h2> Home </h2>
+{% endblock %}
+
+{% block body %}
+{% load people_tags %}
+<div class="intro">
+    This is a list of all of the people on the Django Community aggregator. Along with their profiles on some other social sites on the interwebs. This is a proof of concept at the moment, so play around with it. But don't be sad if it breaks :)
+
+    Note that all URLs that have /all/ in them can be replaced with a service slug, and it will filter by that.
+    </div>
+<br><br>
+<h2> Rivers </h2>
+<a href="/agg/river/all/">Everything</a><br>
+{% for service in services %}
+<a href="{% url djangopeople_service_river service.slug %}">{{ service }}</a><br>
+{% endfor %}
+<br>
+<h2>Last Entries </h2>
+{% for object in entries %}
+{% render object %}
+{% endfor %}
+<br><br>
+
+{% endblock %}

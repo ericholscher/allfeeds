@@ -1,0 +1,28 @@
+{% extends "djangopeople/base.html" %}
+
+{% block dptitle %}
+Profile for {{ member.name }}
+{% endblock %}
+
+{% block body_title %}
+<h2>
+<a href="{{ member.get_absolute_url }}">{{ member.name }}</a><br>
+<a href="/django/feeds/person/{{ member.slug }}/">Atom Feed of this Page</a>
+</h2>
+{% endblock %}
+
+{% block body %}
+{% load people_tags tagging_tags %}
+RSS: <a href="{{ services.0.feed_url }}">{{ services.0.feed_url }}</a><br>
+Tags: {% tags_for_object member as tag_list %}{{ tag_list|join:" " }}<br><br>
+
+{% for service in services %}
+{{ service.service }} : {{ service.username }}<br><br>
+{% endfor %}
+<br>
+<br>
+{% for object in entries %}
+{% render object %}
+{% endfor %}
+
+{% endblock %}

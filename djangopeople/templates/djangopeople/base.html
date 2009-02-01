@@ -1,0 +1,20 @@
+{% extends "site_base.html" %}
+
+{% block head_title %}
+{% block dptitle %}{% endblock %} | Django Aggregator v2
+{% endblock %}
+
+{% block djangopeople_menu %}
+<p>
+<ul>
+<li> <a href="/django/">Home</a> </li>
+<li> <a href="/django/members/">Members</a> </li>
+<li> <a href="/django/river/all/">Fire hose</a> </li>
+{% if member.name %}
+<li> <a href="all/">User Fire Hose</a> </li>
+{% endif %}
+</ul>
+</p>
+<hr>
+{% endblock %}
+
