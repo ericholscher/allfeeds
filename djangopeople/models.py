@@ -91,8 +91,6 @@ class Subdomain(models.Model):
     user = models.ForeignKey(User, null=True, blank=True, related_name="subdomain")
     #For django.allfeeds.net, no user, but follow people
     members = models.ManyToManyField(Member, null=True, blank=True, related_name="subdomains")
-    #Also follow service instances (Flickr photos tagged django etc.)
-    service_entries = models.ManyToManyField(ServiceEntry, null=True, blank=True, related_name="subdomains")
 
     #slug.allfeeds.net
     slug = models.SlugField(unique=True, blank=True)

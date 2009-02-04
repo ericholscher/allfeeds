@@ -66,8 +66,8 @@ class Command(BaseCommand):
 
         logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s: %(message)s',
-                    filename='/home/eric/.cron.log',
-                    filemode='a'
+                    #filename='/home/eric/.cron.log',
+                    #filemode='a'
                    )
 
         update_feeds = options.get('update_feeds', False)
