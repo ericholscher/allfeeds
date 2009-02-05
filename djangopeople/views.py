@@ -11,7 +11,7 @@ from django.http import HttpResponsePermanentRedirect
 
 def home(request):
     sub = _get_subdomain(request)
-    entries = BaseFeed.objects.filter(service_entry__subdomains=sub)[:50]
+    entries = BaseFeed.objects.filter(service_entry__member__subdomains=sub)[:50]
     services = Service.objects.filter(active=True)
     return render_to_response('djangopeople/home.html', {'entries': entries,
                                                          'services': services},

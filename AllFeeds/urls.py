@@ -28,6 +28,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^$', 'djangopeople.views.home', name='home'),
     (r'^agg/', include('djangopeople.urls')),
+    (r'^sg/', include('socialgraph.urls')),
     (r'^about/', include('about.urls')),
     (r'^account/', include('account.urls')),
     (r'^openid/(.*)', PinaxConsumer()),
