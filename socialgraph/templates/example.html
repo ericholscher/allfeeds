@@ -5,20 +5,33 @@
     <title>Example page</title>
    <script type="application/x-javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.1/jquery.js"></script>
 <script type="application/x-javascript">
+function process_json(json) {
+    $("#reply").text(json)
+}
+/*
  $(document).ready(function(){
-$("#json_request_submit").click(function() {
-    $.post('http://localhost:8000/sg/json_url/', {'url': $('#json_url').val() }, process_json)
-})
+$("#json_request_submit").click(function(event) {
+    event.preventDefault();
+    url = $('#json_url').val()
+    $.post('http://localhost:8000/sg/json_url/', {'url': url }, process_json);
+    return false;
+});
  });
+*/
 </script>
 </head>
 <body>
     <h1>Example page</h1>
 <form name="json_request" action="http://localhost:8000/sg/json_url/" method="POST" enctype="application/x-www-form-urlencoded">
-<input type="text" id="json_url" name="url" value="" size="40" maxlength="40"  min="" max="" accept=""/>
+<input type="text" id="json_url" name="url" value="" size="90" maxlength="90"  min="" max="" accept=""/>
 <input id="json_request_submit" type="submit"/>
 <input type="reset"/>
 </form>
+<h3>Results</h3>
+<pre>
+<div id="reply">
+</div>
+</pre>
 
 </body>
 </html>
