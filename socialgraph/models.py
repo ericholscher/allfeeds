@@ -16,29 +16,44 @@ class Request(models.Model):
     slug = models.SlugField()
     json_obj = models.TextField(blank=True)
 
-    nodes_referenced = models.ManyToManyField('self', related_name='nodes_referenced_by', null=True)
-    claimed_nodes = models.ManyToManyField('self', related_name='unverified_claiming_nodes', null=True)
-    toplevel_nodes = models.ManyToManyField('self', related_name='parents', null=True)
+    claimed_nodes = models.ManyToManyField('Request', related_name='unverified_claiming_nodes', null=True, symmetrical=False)
+    toplevel_nodes = models.ManyToManyField('Request', related_name='parents', null=True, symmetrical=False)
+    #Need a through model here
+    nodes_referenced = models.ManyToManyField('Request', through='Contact', related_name='nodes_referenced_by', null=True, symmetrical=False)
     #types?
     populated = models.BooleanField(default=False)
 
+    @property
+    def toplevel(self):
+        return list(self.toplevel_nodes.all())
+
+    @property
+    def claimed(self):
+        return list(self.claimed_nodes.all())
+
+    @property
+    def referenced(self):
+        return list(self.nodes_referenced.all())
+
+
+
+
     def fetch_social_object(self):
-        #if self.populated:
-            #return self.json_obj
         print "querying %s" % self.url
         resp = urllib2.urlopen(query_url % self.url)
         self.json_obj = resp.read()
+        self.populated = True
         self.save()
         return json.JSONDecoder().decode(self.json_obj)
 
-    def populate_structure(self):
-        if self.populated:
+    def populate_structure(self, fill=False, force=False):
+        if self.populated and not force:
             print "%s already populated" % self.url
             return
         try:
             python_obj = self.fetch_social_object()
-        except:
-            print "(HTTP) FAIL"
+        except Exception, e:
+            print "(HTTP) FAIL: %s" % e
             return
 
         self.canonical_mapping = python_obj['canonical_mapping'].values()[0]
@@ -47,7 +62,8 @@ class Request(models.Model):
         if python_obj:
             for url,node in python_obj['nodes'].items():
                 t, created = Request.objects.get_or_create(url=url)
-                t.populate_structure()
+                if fill:
+                    t.populate_structure()
                 self.toplevel_nodes.add(t)
 
                 for claimed_node in node.get('claimed_nodes', []):
@@ -56,7 +72,7 @@ class Request(models.Model):
 
                 for name,types in node.get('nodes_referenced',{}).iteritems():
                     n, created = Request.objects.get_or_create(url=name)
-                    n.types = types['types']
+                    c, cr = Contact.objects.get_or_create(fro=node, to=n, types=types)
                     self.nodes_referenced.add(n)
                 """
                 for unverified_node in node.get('unverified_claiming_nodes', []):
@@ -70,11 +86,8 @@ class Request(models.Model):
                 """
         self.save()
 
-    def pretty_picture(self):
-        if not self.populated:
-            self.populate_structure()
-
-        gr = graph.graph()
+    def dot_file(self, referenced=False):
+        gr = graph.digraph()
         gr.add_nodes([self.url])
         toplevel = self.toplevel_nodes.all()
         gr.add_nodes(list(toplevel))
@@ -82,11 +95,22 @@ class Request(models.Model):
             print "Making %s" % node
             gr.add_nodes([str(node)])
             gr.add_edge(self.url, str(node))
+            for claimed in node.claimed_nodes.all():
+                gr.add_nodes([str(claimed)])
+                gr.add_edge(str(node), str(claimed))
+        if referenced:
+            for node in self.nodes_referenced.all():
+                gr.add_nodes([str(node)])
+                gr.add_edge(str(url), str(node))
+
 
         dot = gr.write(fmt='dot')
+        """
         gvv = gv.readstring(dot)
         gv.layout(gvv,'dot')
         gv.render(gvv,'png','test.png')
+        """
+        return dot
 
     def __unicode__(self):
         return self.url
@@ -105,3 +129,29 @@ class Request(models.Model):
         temp_url = temp_url.rstrip('/ ')
         self.slug = slugify(self.url)
         super(Request, self).save(force_insert, force_update)
+
+CONTACT_TYPES = (
+    ('me', 'me'),
+    ('contact', 'contact'),
+    ('acquaintance', 'acquaintance'),
+    ('friend', 'friend'),
+    ('met', 'met'),
+    ('co-worker', 'co-worker'),
+    ('colleague', 'colleague'),
+    ('co-resident', 'co-resident'),
+    ('neighbor', 'neighbor'),
+    ('child', 'child'),
+    ('parent', 'parent'),
+    ('sibling', 'sibling'),
+    ('spouse', 'spouse'),
+    ('kin', 'kin'),
+    ('muse', 'muse'),
+    ('crush', 'crush'),
+    ('date', 'date'),
+    ('sweetheart', 'sweetheart'),
+    )
+
+class Contact(models.Model):
+    to = models.ForeignKey(Request)
+    fro = models.ForeignKey(Request)
+    types = models.CharField(max_length=100)

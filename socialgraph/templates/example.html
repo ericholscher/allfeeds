@@ -21,6 +21,7 @@ $("#json_request_submit").click(function(event) {
 </script>
 </head>
 <body>
+{% block body %}
     <h1>Example page</h1>
 <form name="json_request" action="http://localhost:8000/sg/json_url/" method="POST" enctype="application/x-www-form-urlencoded">
 <input type="text" id="json_url" name="url" value="" size="90" maxlength="90"  min="" max="" accept=""/>
@@ -32,6 +33,6 @@ $("#json_request_submit").click(function(event) {
 <div id="reply">
 </div>
 </pre>
-
+{% endblock %}
 </body>
 </html>

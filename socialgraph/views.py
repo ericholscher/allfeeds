@@ -3,8 +3,12 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from socialgraph.models import Request
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from djangopeople.models import Service
+import graph
+import gv
+import shutil
+import os
 
 
 def socialgraph_json(request, url):
@@ -32,3 +36,33 @@ def process_url(request):
     #ret_val += ["<- friend: %s \n" % url for url in fake_friends]
     #ret_val.append("\n\n\n%s" % r.json_obj)
     return HttpResponse(ret_val, mimetype='application/javascript')
+
+
+def pretty_picture(request, url):
+    rnode, created = Request.objects.get_or_create(url=url)
+    if created or not rnode.populated:
+        rnode.populate_structure(fill=True)
+    dirname = rnode.slug
+    dest_dir = '/var/www/af/media/%s' % dirname
+    dest_file = os.path.join(dest_dir, 'claimed.png')
+    redir_file = '/media/%s/claimed.png' % dirname
+
+    if not os.path.exists(dest_dir):
+        os.mkdir(dest_dir)
+
+    if os.path.exists(dest_file):
+        return render_to_response('pretty.html', {'file_path': redir_file})
+
+    dot = rnode.dot_file()
+    gvv = gv.readstring(dot)
+    gv.layout(gvv,'dot')
+
+    #Hack so it'll make the right file
+    old_cwd = os.getcwd()
+    os.chdir(dest_dir)
+    gv.render(gvv, 'png', 'claimed.png')
+    os.chdir(old_cwd)
+    return render_to_response('pretty.html', {'file_path': redir_file})
+
+def friend_picture(request, url):
+    pass
