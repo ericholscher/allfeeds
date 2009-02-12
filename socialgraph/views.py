@@ -5,10 +5,10 @@ from django.template import RequestContext
 from socialgraph.models import Request
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from djangopeople.models import Service
-import graph
-import gv
+import pygraphviz
 import shutil
 import os
+import re
 
 
 def socialgraph_json(request, url):
@@ -17,52 +17,99 @@ def socialgraph_json(request, url):
         r.populate_structure()
     return HttpResponse(r.json_obj, mimetype='application/javascript')
 
-def process_url(request):
+def get_friends(request):
     if request.POST:
-        url = request.POST['url']
+        twitter = "http://twitter.com/" +  request.POST['twitter']
     else:
         return Http404('Please post, yo')
 
-    r, created = Request.objects.get_or_create(url=url)
+    twitter2 = ""
+    if request.POST.has_key('twitter2'):
+        twitter2 = "http://twitter.com/" +  request.POST['twitter2']
+
+    r, created = Request.objects.get_or_create(url=twitter)
     if created or not r.populated:
-        r.populate_structure()
-    #ret_val = r.json_obj
+        r.populate_structure(force=True)
+
+    r2, created = Request.objects.get_or_create(url=twitter2)
+    if created or not r.populated:
+        r.populate_structure(force=True)
     claimed = list(r.claimed_nodes.all())
-    fake_friends = Request.objects.filter(nodes_referenced__in=r.claimed_nodes.all()).distinct()
-    friends = fake_friends.in_bulk([r.id for r in r.nodes_referenced.all()]).values()
-    #friends = r.nodes_referenced.all().distinct()
-    ret_val = "%s = %s" % (len(fake_friends), len(friends))
-    #ret_val = ["friend ->: %s \n" % url for url in friends]
-    #ret_val += ["<- friend: %s \n" % url for url in fake_friends]
-    #ret_val.append("\n\n\n%s" % r.json_obj)
-    return HttpResponse(ret_val, mimetype='application/javascript')
+    friends = r.nodes_referenced.all()
+    fake_friends = r.nodes_referenced_by.all()
+    #ret_val = ["%s\n" % c.url for c in claimed]
+    services = Service.objects.exclude(user_template='')
+    ret_val = '{\n'
+    for service in services:
+        service_feed = service.user_template.replace('%s','(\w+)')
+        srv_re = re.compile(service_feed)
+        for url in [u.url for u in claimed]:
+            match = srv_re.search(url)
+            if match:
+                ret_val += "'%s': '%s',\n" % (service.slug, match.group(1))
+
+    ret_val += "}\n\n"
+
+    friends = r.nodes_referenced.all()
+    friends2 = r2.nodes_referenced.all()
+    for friend in friends2:
+        if friend in friends:
+            ret_val += "LOVE <-> %s\n" % friend
 
 
-def pretty_picture(request, url):
-    rnode, created = Request.objects.get_or_create(url=url)
+    fake_friends = r.nodes_referenced_by.all()
+    for friend in friends:
+        if friend in fake_friends:
+            ret_val += "LOVE %s\n" % friend
+    #ret_val += "\n".join(["friend ->: %s \n" % f.url for f in list(friends)])
+    #ret_val += "\n".join(["<- friend: %s \n" % f.url for f in list(fake_friends)])
+    #ret_val += ("\n\n\n%s" % r.json_obj)
+    return HttpResponse("<pre>%s</pre>" % ret_val, mimetype='application/javascript')
+
+
+def pretty_picture(request):
+    if request.POST:
+        twitter = "http://twitter.com/" +  request.POST['twitter']
+    else:
+        return Http404('Please post, yo')
+
+    layout = "dot"
+    if request.POST.has_key('layout'):
+        layout = request.POST['layout']
+
+    filename = type = "claimed"
+    if request.POST.has_key('type'):
+        filename = type = request.POST['type']
+
+    format = "png"
+    if request.POST.has_key('format'):
+        format = request.POST['format']
+
+    rnode, created = Request.objects.get_or_create(url=twitter)
     if created or not rnode.populated:
         rnode.populate_structure(fill=True)
+
+
+    fname = '%s_%s.%s' % (filename, layout, format)
     dirname = rnode.slug
     dest_dir = '/var/www/af/media/%s' % dirname
-    dest_file = os.path.join(dest_dir, 'claimed.png')
-    redir_file = '/media/%s/claimed.png' % dirname
+    dest_file = os.path.join(dest_dir, fname)
+    redir_file = '/media/%s/%s' % (dirname, fname)
 
     if not os.path.exists(dest_dir):
         os.mkdir(dest_dir)
 
+    #This will comment out when debugging
     if os.path.exists(dest_file):
         return render_to_response('pretty.html', {'file_path': redir_file})
 
-    dot = rnode.dot_file()
-    gvv = gv.readstring(dot)
-    gv.layout(gvv,'dot')
-
-    #Hack so it'll make the right file
-    old_cwd = os.getcwd()
-    os.chdir(dest_dir)
-    gv.render(gvv, 'png', 'claimed.png')
-    os.chdir(old_cwd)
-    return render_to_response('pretty.html', {'file_path': redir_file})
-
-def friend_picture(request, url):
-    pass
+    if type == "claimed":
+        dot = rnode.dot_file(referenced=False)
+    else:
+        dot = rnode.dot_file(referenced=True)
+    pygv = pygraphviz.AGraph(dot)
+    pygv.graph_attr['label']='Social Graph'
+    pygv.node_attr['shape']='square'
+    pygv.layout(prog=layout)
+    pygv.draw(dest_file)
+    return HttpResponse('<img alt="Pretty picture" src="%s">' % redir_file)

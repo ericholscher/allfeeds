@@ -4,8 +4,8 @@ import simplejson as json
 import urllib2
 from django.db import models
 from django.template.defaultfilters import slugify
-import graph
-import gv
+import pygraphviz
+import BeautifulSoup
 
 
 query_url = "http://socialgraph.apis.google.com/lookup?q=%s&fme=1&edo=1&edi=1&pretty=1"
@@ -35,9 +35,6 @@ class Request(models.Model):
     def referenced(self):
         return list(self.nodes_referenced.all())
 
-
-
-
     def fetch_social_object(self):
         print "querying %s" % self.url
         resp = urllib2.urlopen(query_url % self.url)
@@ -45,6 +42,17 @@ class Request(models.Model):
         self.populated = True
         self.save()
         return json.JSONDecoder().decode(self.json_obj)
+
+    def fetch_fresh_data(self, fill=False):
+        """
+        resp = urllib2.urlopen(self.url)
+        bs = BeautifulSoup.BeautifulSoup(resp.read())
+        for link in bs.findAll('a', rel='me'):
+            populate_links(link)
+
+        """
+        pass
+
 
     def populate_structure(self, fill=False, force=False):
         if self.populated and not force:
@@ -70,46 +78,57 @@ class Request(models.Model):
                     n, created = Request.objects.get_or_create(url=claimed_node)
                     self.claimed_nodes.add(n)
 
-                for name,types in node.get('nodes_referenced',{}).iteritems():
-                    n, created = Request.objects.get_or_create(url=name)
-                    c, cr = Contact.objects.get_or_create(fro=node, to=n, types=types)
-                    self.nodes_referenced.add(n)
-                """
                 for unverified_node in node.get('unverified_claiming_nodes', []):
                     n, created = Request.objects.get_or_create(url=unverified_node)
                     self.unverified_claiming_nodes.add(n)
 
+                for name,types in node.get('nodes_referenced',{}).iteritems():
+                    n, created = Request.objects.get_or_create(url=name)
+                    type_str = ','.join(types['types'])
+                    c, cr = Contact.objects.get_or_create(fro=t, to=n, types=type_str)
+
                 for name,types in node.get('nodes_referenced_by',{}).iteritems():
                     n, created = Request.objects.get_or_create(url=name)
-                    n.types = types['types']
-                    self.nodes_referenced_by[name] = n
-                """
+                    type_str = ','.join(types['types'])
+                    c, cr = Contact.objects.get_or_create(fro=n, to=t, types=type_str)
+
         self.save()
 
     def dot_file(self, referenced=False):
-        gr = graph.digraph()
-        gr.add_nodes([self.url])
+        gr = G=pygraphviz.AGraph(strict=False,directed=True)
+
+        gr.add_node(str(self.url), shape='tripleoctagon')
         toplevel = self.toplevel_nodes.all()
-        gr.add_nodes(list(toplevel))
+        gr.add_nodes_from(list(toplevel))
         for node in toplevel:
             print "Making %s" % node
-            gr.add_nodes([str(node)])
-            gr.add_edge(self.url, str(node))
-            for claimed in node.claimed_nodes.all():
-                gr.add_nodes([str(claimed)])
-                gr.add_edge(str(node), str(claimed))
-        if referenced:
-            for node in self.nodes_referenced.all():
-                gr.add_nodes([str(node)])
-                gr.add_edge(str(url), str(node))
+            gr.add_node(str(node.url))
+            gr.add_edge(str(self.url), node.url)
+            for claimed in node.claimed_nodes.all().values('url'):
+                claimed_url = claimed['url']
+                gr.add_node(str(claimed_url))
+                gr.add_edge(node.url, claimed_url)
+                try:
+                    gr.add_edge_attribute(node.url, claimed_url, color='red')
+                    contact = Contact.objects.get(fro=node, to__url=claimed_url)
+                    gr.add_edge_attribute(node.url, claimed_url, taillabel= str(contact.types) )
+                except Exception, e:
+                    pass
+            if referenced:
+                for ref_node in node.nodes_referenced.all().values('url'):
+                    ref_url = ref_node['url']
+                    gr.add_node(ref_url)
+                    gr.add_edge(str(node.url), ref_url)
+                    try:
+                        gr.add_edge_attribute(node.url, ref_url, color='blue' )
+                        contact = Contact.objects.get(fro__url=node.url, to__url=ref_url)
+                        gr.add_edge_attribute(node.url, ref_url, headlabel=str(contact.types) )
+                    except Exception, e:
+                        #print "ref exception %s" % e
+                        pass
 
 
-        dot = gr.write(fmt='dot')
-        """
-        gvv = gv.readstring(dot)
-        gv.layout(gvv,'dot')
-        gv.render(gvv,'png','test.png')
-        """
+        dot = gr.string()
         return dot
 
     def __unicode__(self):
@@ -123,7 +142,7 @@ class Request(models.Model):
 
     def save(self, force_insert=False, force_update=False):
         temp_url = self.url
-        temp_url = temp_url.replace('http://', '')
+        temp_url = temp_url.strip().replace('http://', '')
         #import ipdb; ipdb.set_trace()
         temp_url = temp_url.replace('www.', '')
         temp_url = temp_url.rstrip('/ ')
@@ -136,9 +155,9 @@ CONTACT_TYPES = (
     ('acquaintance', 'acquaintance'),
     ('friend', 'friend'),
     ('met', 'met'),
-    ('co-worker', 'co-worker'),
+    ('coworker', 'coworker'),
     ('colleague', 'colleague'),
-    ('co-resident', 'co-resident'),
+    ('coresident', 'coresident'),
     ('neighbor', 'neighbor'),
     ('child', 'child'),
     ('parent', 'parent'),
@@ -152,6 +171,12 @@ CONTACT_TYPES = (
     )
 
 class Contact(models.Model):
-    to = models.ForeignKey(Request)
-    fro = models.ForeignKey(Request)
+    to = models.ForeignKey(Request, related_name='contact_to')
+    fro = models.ForeignKey(Request, related_name='contact_fro')
     types = models.CharField(max_length=100)
+
+    def __unicode__(self):
+        return "<Contact %s -> %s -> %s" % (self.fro.url, self.types, self.to.url)
+
+    def __repr__(self):
+        return self.__unicode__()
