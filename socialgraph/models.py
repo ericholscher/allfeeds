@@ -92,6 +92,8 @@ class Request(models.Model):
                     type_str = ','.join(types['types'])
                     c, cr = Contact.objects.get_or_create(fro=n, to=t, types=type_str)
 
+        else:
+            print "NO PYTHON OBJECT YO"
         self.save()
 
     def dot_file(self, referenced=False):
