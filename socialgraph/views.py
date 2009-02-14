@@ -63,7 +63,7 @@ def get_friends(request):
             ret_val += "LOVE %s\n" % friend
     #ret_val += "\n".join(["friend ->: %s \n" % f.url for f in list(friends)])
     #ret_val += "\n".join(["<- friend: %s \n" % f.url for f in list(fake_friends)])
-    #ret_val += ("\n\n\n%s" % r.json_obj)
+    ret_val += ("\n\n\n%s" % r.json_obj)
     return HttpResponse("<pre>%s</pre>" % ret_val, mimetype='application/javascript')
 
 
