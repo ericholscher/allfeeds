@@ -107,22 +107,20 @@ class Request(models.Model):
             for claimed in node.claimed_nodes.all().values('url'):
                 claimed_url = claimed['url']
                 gr.add_node(str(claimed_url))
-                gr.add_edge(node.url, claimed_url)
+                gr.add_edge(node.url, claimed_url, color='red')
                 try:
-                    gr.add_edge_attribute(node.url, claimed_url, color='red')
                     contact = Contact.objects.get(fro=node, to__url=claimed_url)
-                    gr.add_edge_attribute(node.url, claimed_url, taillabel= str(contact.types) )
+                    gr.add_edge(node.url, claimed_url, taillabel= str(contact.types) )
                 except Exception, e:
                     pass
             if referenced:
                 for ref_node in node.nodes_referenced.all().values('url'):
                     ref_url = ref_node['url']
-                    gr.add_node(ref_url)
-                    gr.add_edge(str(node.url), ref_url)
+                    gr.add_node(str(ref_url))
+                    gr.add_edge(node.url, ref_url, color='blue' )
                     try:
-                        gr.add_edge_attribute(node.url, ref_url, color='blue' )
                         contact = Contact.objects.get(fro__url=node.url, to__url=ref_url)
-                        gr.add_edge_attribute(node.url, ref_url, headlabel=str(contact.types) )
+                        gr.add_edge(node.url, ref_url, headlabel=str(contact.types) )
                     except Exception, e:
                         #print "ref exception %s" % e
                         pass

@@ -109,7 +109,6 @@ def pretty_picture(request):
         dot = rnode.dot_file(referenced=True)
     pygv = pygraphviz.AGraph(dot)
     pygv.graph_attr['label']='Social Graph'
-    pygv.node_attr['shape']='square'
     pygv.layout(prog=layout)
     pygv.draw(dest_file)
     return HttpResponse('<img alt="Pretty picture" src="%s">' % redir_file)
