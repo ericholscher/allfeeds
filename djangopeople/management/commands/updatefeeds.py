@@ -110,15 +110,12 @@ class Command(BaseCommand):
 
         elif subdomain and update_feeds and service:
             print "Updating feeds for a service in subdomain"
-            for service_entry in subdomain.service_entries.all():
+            for service_entry in subdomain.members.service_entries.all():
                 update_feed(service_entry=service_entry, subdomain=subdomain)
 
         elif subdomain and update_feeds:
             print "Updating _all_ feeds for all users in subdomain"
             for service_entry in ServiceEntry.objects.filter(member__subdomains=subdomain):
-                update_feed(service_entry=service_entry, subdomain=subdomain)
-
-            for service_entry in subdomain.service_entries.all():
                 update_feed(service_entry=service_entry, subdomain=subdomain)
 
         #Actions performed on services
