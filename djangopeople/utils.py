@@ -11,6 +11,8 @@ from dateutil import parser
 from tagging.models import Tag
 from django.conf import settings
 
+from django.db import transaction
+
 log = logging.getLogger("djangopeople.utils")
 
 def _get_subdomain(request):
@@ -20,6 +22,7 @@ def _get_subdomain(request):
     """
     return Subdomain.objects.get(slug=request.subdomain)
 
+@transaction.commit_on_success()
 def update_feed(service_entry, subdomain=None):
     "Feed entry dispatcher"
     try:
