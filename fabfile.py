@@ -1,9 +1,5 @@
 config.fab_user = 'eric'
 
-def test():
-    local("python ./AllFeeds/manage.py test", fail="abort")
-
-
 def git_pull():
     "Updates the repository."
     run("cd ~/lib/$(repo)/; git pull $(parent) $(branch)")
@@ -11,7 +7,6 @@ def git_pull():
 def git_reset():
     "Resets the repository to specified version."
     run("cd ~/lib/$(repo)/; git reset --hard $(hash)")
-
 
 def production():
     config.fab_hosts = ['fredvents.com']
@@ -43,4 +38,3 @@ def reset(repo, hash):
     config.hash = hash
     config.repo = repo
     invoke(git_reset)
-
