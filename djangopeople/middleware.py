@@ -14,4 +14,4 @@ class GetSubdomainMiddleware:
             subdomain = 'django'
             domain = request.META['HTTP_HOST']
 
-        request.subdomain = subdomain
+        request.subdomain = 'django'# subdomain
