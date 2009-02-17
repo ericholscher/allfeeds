@@ -6,6 +6,7 @@ from djangopeople.providers.agg import _update_user_list, _update_socialgraph
 from djangopeople.models import Member, Subdomain, Service, ServiceEntry
 import logging
 from urlparse import urlparse
+from django.conf import settings
 
 """
 This file is best used in the following order
@@ -66,7 +67,7 @@ class Command(BaseCommand):
 
         logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s: %(message)s',
-                    filename='/home/eric/.cron.log',
+                    filename=settings.CRON_LOG_PATH,
                     filemode='a'
                    )
 
