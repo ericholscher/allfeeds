@@ -67,8 +67,13 @@ class Command(BaseCommand):
 
         logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s: %(message)s',
+<<<<<<< HEAD:djangopeople/management/commands/updatefeeds.py
                     filename=settings.CRON_LOG_PATH,
                     filemode='a'
+=======
+                    #filename='/home/eric/.cron.log',
+                    #filemode='a'
+>>>>>>> github/dev:djangopeople/management/commands/updatefeeds.py
                    )
 
         update_feeds = options.get('update_feeds', False)

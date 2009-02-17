@@ -206,7 +206,6 @@
         <field to="auth.user" name="user" rel="ManyToOneRel"><None></None></field>
         <field type="CharField" name="source_url">http://djangoproject.com/community/</field>
         <field to="djangopeople.member" name="members" rel="ManyToManyRel"></field>
-        <field to="djangopeople.serviceentry" name="service_entries" rel="ManyToManyRel"></field>
         <field type="DateTimeField" name="last_user_check">2009-01-01 14:06:44</field>
     </object>
     <object pk="2" model="djangopeople.subdomain">
@@ -214,7 +213,6 @@
         <field to="auth.user" name="user" rel="ManyToOneRel"><None></None></field>
         <field type="CharField" name="source_url">http://www.planetpython.org/</field>
         <field to="djangopeople.member" name="members" rel="ManyToManyRel"></field>
-        <field to="djangopeople.serviceentry" name="service_entries" rel="ManyToManyRel"></field>
         <field type="DateTimeField" name="last_user_check">2009-01-01 14:06:44</field>
     </object>
 </django-objects>

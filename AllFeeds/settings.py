@@ -169,6 +169,7 @@ INSTALLED_APPS = (
 
     #mine
     'djangopeople',
+    'socialgraph',
     'django_extensions',
 
     'django.contrib.admin',

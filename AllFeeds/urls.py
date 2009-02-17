@@ -28,6 +28,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^$', 'djangopeople.views.home', name='home'),
     (r'^agg/', include('djangopeople.urls')),
+    (r'^sg/', include('socialgraph.urls')),
     (r'^about/', include('about.urls')),
     (r'^account/', include('account.urls')),
     (r'^openid/(.*)', PinaxConsumer()),
@@ -104,4 +105,6 @@ if settings.SERVE_MEDIA:
     urlpatterns += patterns('',
         (r'^site_media/(?P<path>.*)$', 'django.views.static.serve',
             {'document_root': os.path.join(os.path.dirname(__file__), "site_media")}),
+        (r'^media/(?P<path>.*)$', 'django.views.static.serve',
+            {'document_root': '/var/www/af/media/'}),
     )
