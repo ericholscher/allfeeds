@@ -13,8 +13,9 @@ River of {{ tag.name|capfirst }}<br>
 
 {% block body %}
 {% load people_tags %}
+<div class="grid_12 alpha">
 {% for object in object_list %}
 {% render_item %}
 {% endfor %}
-<br><br>
+</div>
 {% endblock %}

@@ -13,8 +13,18 @@ River of {{ riverof|capfirst }}<br>
 
 {% block body %}
 {% load markup people_tags %}
+
+<div class="grid_10 alpha">
+     <div id="primaryContent">
+<h2>River of {{ riverof|capfirst }}</h2>
+
 {% for object in objects %}
 {% render object %}
 {% endfor %}
-<br><br>
+     </div>
+</div>
+<div class="grid_6 omega">
+    <div id="secondaryContent">
+    </div>
+</div>
 {% endblock %}
