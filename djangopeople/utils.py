@@ -22,7 +22,7 @@ def _get_subdomain(request):
     """
     return Subdomain.objects.get(slug=request.subdomain)
 
-@transaction.commit_on_success()
+@transaction.commit_on_success
 def update_feed(service_entry, subdomain=None):
     "Feed entry dispatcher"
     try:
