@@ -1,0 +1,23 @@
+body {
+    font-family: Helvetica, sans-serif;
+    font-size: 12px;
+}
+
+a {
+   color: #729fa5;
+}
+
+h2 {
+  font-size: 24px;
+}
+p {
+   font-size: 12px;
+   margin-bottom: 1em;
+   color: #333;
+}
+
+a.contributedName {
+    font-weight: strong;
+    font-size: 1.2em;
+    padding: 5px;
+}

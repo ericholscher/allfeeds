@@ -1,0 +1,7 @@
+/* Add catagorized stylesheets */
+
+@import url(960/reset.css);
+@import url(960/960.css);
+@import url(typography.css);
+@import url(design.css);
+
