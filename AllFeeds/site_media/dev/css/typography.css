@@ -1,6 +1,7 @@
 body {
     font-family: Helvetica, sans-serif;
     font-size: 12px;
+    color: #333;
 }
 
 a {
@@ -8,16 +9,27 @@ a {
 }
 
 h2 {
-  font-size: 24px;
+  font-size: 260%;
 }
+
+h3 {
+   font-size: 200%;
+}
+
 p {
-   font-size: 12px;
+   font-size: 100%;
    margin-bottom: 1em;
    color: #333;
 }
 
 a.contributedName {
     font-weight: strong;
-    font-size: 1.2em;
+    font-size: 120%;
     padding: 5px;
 }
+
+
+#secondaryContent h2 {
+   font-size: 180%;
+}
+

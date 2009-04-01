@@ -1,72 +1,77 @@
 body {
-    background: #eee url(http://gator.brianmckinney.net/site_media/dev/images/home_bg.jpg) repeat-x;
+    background: #ddd url(/site_media/dev/images/home_bg.jpg) repeat-x;
 }
 
-div#wrapper {
+#wrapper {
 }
 
-div#header {
-	background: #321a01;
-        height: 88px;
+#header {
+        height: 80px;
+        background: url(/site_media/dev/images/header_spotlight_bg.jpg) no-repeat;
 }
 
-div#header h1 {
+#header h1 {
      	margin-top: 10px;
         text-indent: -20000px;
-        background: url(http://gator.brianmckinney.net//site_media/dev/images/logo.jpg);
+        background: url(/site_media/dev/images/logo.jpg) no-repeat;
+        width: 320px;
         height: 60px;
-        width: 280px
 }
 
-ul#mainNav {
-      font-size: 14px;
-      background: #6d5e58;
+#mainNav {
       padding: 1em;
+      overflow: hidden;
 }
 
 
+#home #mainNav {
+     margin-bottom: 2em;
+}
 
-
-ul#mainNav li {
+#mainNav li {
   display: inline;
 }
 
-ul#mainNav li a {
-   padding: 5px 10px;
+#mainNav li a {
+   padding: 6px 15px;
    text-decoration: none;
+   overflow: hidden;
    color: #fff;
-   font-size: 12px;
+   display: block;
+   float: left;
    font-weight: bold;
 }
 
-div#mainContent {
+#mainContent {
+   background: url(/site_media/dev/images/body_bg.jpg) repeat-y #fff;
+   overflow: hidden;
 }
 
-div#primaryContent {
-    padding: 2em 1em;
+#primaryContent {
+    padding: 2em 0;
     background: #fff;
 }
 
 div#secondaryContent {
     padding-top: 2em;
-    background: #ccc;
 }
 
-div.itemGroup {
+.itemGroup {
+   margin: 1em;
    padding: 1em;
    border-bottom: 1px solid #eee;
 }
 
-a.contributedName {
+.contributedName {
 }
 
-a.contributedTime {
+.contributedTime {
    font-size: 12px;
    float: right;
 }
 
 
-div#footer {
+#footer {
     padding: 2em;
 }
 

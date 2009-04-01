@@ -1,0 +1,10 @@
+{% load tagging_tags %}
+{% tags_for_object item as tag_list %}
+<div class="itemGroup blogItem">
+<a href="{{ item.get_river_url }}"><img alt="{{item.service_id}}" src="{{ item.get_icon_url }}" /></a>
+    <a class="contributedName" href="{{ item.member.get_absolute_url }}">{{ item.member.name }}</a>
+    <a class="contributedTime" href="{{ item.get_absolute_url }}">{{ item.published|timesince }} ago </a>
+    Tags: {% for tag in tag_list %}<a href="{% url tagging.views.tagged_object_list tag.name %}">{{tag.name}}</a> {% endfor %}
+<p>{{ item.title|urlize }}</p>
+<p>{{ item.summary }}</p>
+</div>

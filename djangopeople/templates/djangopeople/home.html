@@ -6,7 +6,7 @@ Home
 
 {% block body_title %}
 {% endblock %}
-
+{% block bodyId %}home{% endblock %}
 {% block body %}
 {% load people_tags %}
 
@@ -17,17 +17,19 @@ Home
 <a href="{% url djangopeople_service_river service.slug %}">{{ service }}</a><br>
 {% endfor %}
 {% endcomment %}
-        <div class="grid_10 alpha">
-        <div id="primaryContent">
-<h2>Last Entries </h2>
+        <div class="grid_16">
+        <div class="grid_10 alpha" id="primaryContent">
+        <h2>Last Entries </h2>
 {% for object in entries  %}
 {% render object %}
 {% endfor %}
-         </div>
-         </div>
-         <div class="grid_6 omega">
-         <div id="secondaryContent">
+        </div>
+        <div class="grid_6 omega" id="secondaryContent">
+        <h2>Today's most popular content</h2>
+        <ol>
+           <li></li>
+        </ol>
+        </div>
 
-         </div>
-         </div>
+        </div>
 {% endblock %}
